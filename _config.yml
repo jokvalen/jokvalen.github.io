@@ -17,14 +17,14 @@ plugins:
 
 google:
   tag_manager:
-    container_id: GTM-GTM-PQW55W
+    container_id: GTM-PQW55W
 
 # Theme-specific settings
 minima:
   # Minima date format.
   # Refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this.
   #
-  # date_format: "%b %-d, %Y"
+  date_format: "%e %B %Y"
 
   # Generate social links in footer.
   #

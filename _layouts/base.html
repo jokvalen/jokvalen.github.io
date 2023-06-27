@@ -5,8 +5,9 @@
 
   <body>
     {% if jekyll.environment == "production" %}
-      {% gtm body %}
+      {% include gtm/gtm-body.html %}
     {% endif %}
+
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
