@@ -1,0 +1,6 @@
+- name: Hjem
+  link: /
+- name: Om meg
+  link: /om
+- name: Blog
+  link: /blog
