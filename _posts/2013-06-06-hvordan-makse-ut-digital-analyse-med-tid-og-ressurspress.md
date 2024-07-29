@@ -2,7 +2,7 @@
 layout: post
 author: Jo
 title: Hvordan makse ut digital analyse med tid- og ressurspress
-# published: false
+published: false
 ---
 
 Presentasjonen ble holdt på [Yggdrassil-konferansen](https://yggdrasilkonferansen.no/){:target="_blank"}{:rel="noopener noreferrer"} våren 2014.
