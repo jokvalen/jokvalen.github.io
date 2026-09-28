@@ -1,7 +1,8 @@
 ---
-title: Verktøy
+title: "Verktøy"
 ---
 
-Mine arbeidsverktøy er [[Google Analytics]], [[Google Tag Manager|Tag Manager]], [[Hotjar]] og [[Power BI]], som jeg bruker for å forbedre nettsider som skal hjelpe brukerne sine, selge varer og tjenester eller å styrke merkevaren sin.
-
-Jeg snuser også litt på programmering i [[Python]] og [[Webutvikling|webutvikling]].
+- Analyse og måling: [[Google Analytics]], [[Google Tag Manager]], [[BigQuery]], [[Hotjar]]
+- Eksperimentering: [[Optimizely]]
+- Rapportering: [[Looker Studio]], [[Power BI]]
+- Kode og AI: [[Python]], [[Claude Code]], [[Webutvikling]]

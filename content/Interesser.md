@@ -1,7 +1,9 @@
 ---
-title: Interesser
+title: "Interesser"
 ---
 
-- [[Mat]] (lage og spise)
+- [[Mat]]
 - [[Dykking]]
+- [[Reise]]
 - [[Gaming]]
+- [[Lego]]

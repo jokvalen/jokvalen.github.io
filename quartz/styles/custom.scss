@@ -80,18 +80,47 @@ body[data-slug="index"] {
     overflow: hidden;
   }
 
-  // The intro text floats as a small card over the graph.
-  & article > .markdown-preview-view > p {
+  // Title card floating over the graph: value proposition, then links.
+  & .home-intro {
     position: absolute;
     top: 1rem;
     left: 1rem;
     z-index: 1;
-    max-width: 320px;
-    margin: 0;
-    padding: 0.75rem 1rem;
+    max-width: 380px;
+    padding: 1rem 1.25rem;
     background: var(--light);
     border: 1px solid var(--lightgray);
     border-radius: 8px;
+
+    & h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+      line-height: 1.15;
+
+      // Quartz adds a "#" anchor link to every heading; not needed on a title.
+      & a[role="anchor"] {
+        display: none;
+      }
+    }
+
+    & p {
+      margin: 0.5rem 0 0;
+    }
+
+    // The link rows are secondary to the title and subline.
+    & p:nth-of-type(n + 2) {
+      font-size: 0.9rem;
+    }
+
+    @media all and ($mobile) {
+      right: 1rem;
+      max-width: none;
+      padding: 0.75rem 1rem;
+
+      & h1 {
+        font-size: 1.5rem;
+      }
+    }
   }
 }
 

@@ -234,6 +234,7 @@ plugins:
     enabled: true
     options:
       links:
+        Om meg: /om-meg
         E-post: mailto:jo@jokvalen.no
         GitHub: https://github.com/jokvalen
         LinkedIn: https://www.linkedin.com/in/jokvalen/

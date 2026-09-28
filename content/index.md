@@ -2,7 +2,17 @@
 title: Jo Aleksander Bakke Kvalen
 ---
 
-Digital analytiker. Denne siden forteller litt om meg: [[Arbeidserfaring]], [[Utdanning]], [[Verktøy]] og [[Interesser]].
+<div class="home-intro">
+
+# Strukturert nysgjerrighet.
+
+Jeg hjelper digitale virksomheter å forstå brukerne sine, teste ideer og måle effekten.
+
+[[Om meg]] · [LinkedIn](https://www.linkedin.com/in/jokvalen/)
+
+Utforsk: [[Arbeidserfaring]] · [[Fagområder]] · [[Verktøy]] · [[Utdanning]] · [[Interesser]]
+
+</div>
 
 <!-- Full-size graph on the homepage. Script: quartz/static/home-graph.js, styles: quartz/styles/custom.scss -->
 <div id="home-graph"></div>

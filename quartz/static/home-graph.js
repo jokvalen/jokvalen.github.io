@@ -12,15 +12,52 @@
   const slugs = Object.keys(index).filter((s) => !s.startsWith("tags/"))
   const known = new Set(slugs)
   const nodes = slugs.map((slug) => ({ id: slug, label: index[slug].title || slug }))
-  const links = []
-  const neighbours = new Map(slugs.map((s) => [s, new Set([s])]))
+  // Pages whose own links are left out of the graph. "Om meg" links to almost
+  // every note, which would pull all the clusters into the middle.
+  const summaryPages = new Set(["om-meg"])
+  const pairKey = (a, b) => [a, b].sort().join("\n")
+
+  // Links as written in the notes, and one graph link per pair of notes
+  // (two notes linking to each other would otherwise get a double line).
+  const outgoing = new Map(slugs.map((s) => [s, []]))
+  const pairs = new Map()
   for (const source of slugs) {
+    if (summaryPages.has(source)) continue
     for (const target of index[source].links || []) {
       if (!known.has(target) || target === source) continue
-      links.push({ source, target })
-      neighbours.get(source).add(target)
-      neighbours.get(target).add(source)
+      outgoing.get(source).push(target)
+      const key = pairKey(source, target)
+      if (!pairs.has(key)) pairs.set(key, { source, target })
     }
+  }
+  const links = [...pairs.values()]
+
+  // The backbone: walk out from the homepage, breadth first, in the order links
+  // appear in each note (homepage → hubs → periods and tools → jobs and projects).
+  // The link that first reaches a note is a tree link and shapes the layout.
+  // All other links are cross-links: drawn faint and pulling only lightly, so
+  // clusters stay apart. They still light up on hover.
+  const treeLinks = new Set()
+  const reached = new Set(["index"])
+  let queue = ["index"]
+  while (queue.length) {
+    const next = []
+    for (const source of queue) {
+      for (const target of outgoing.get(source) || []) {
+        if (reached.has(target)) continue
+        reached.add(target)
+        treeLinks.add(pairKey(source, target))
+        next.push(target)
+      }
+    }
+    queue = next
+  }
+  links.forEach((l) => (l.tree = treeLinks.has(pairKey(l.source, l.target))))
+
+  const neighbours = new Map(slugs.map((s) => [s, new Set([s])]))
+  for (const { source, target } of links) {
+    neighbours.get(source).add(target)
+    neighbours.get(target).add(source)
   }
   // More connections = bigger node, like Obsidian.
   nodes.forEach((n) => (n.radius = 3 + Math.sqrt(neighbours.get(n.id).size) * 2.2))
@@ -54,7 +91,7 @@
     .graphData({ nodes, links })
     .backgroundColor("rgba(0,0,0,0)")
     .linkColor((l) => (touchesFocus(l) ? colors.accent : colors.link))
-    .linkWidth((l) => (touchesFocus(l) ? 2 : 1))
+    .linkWidth((l) => (touchesFocus(l) ? 2 : l.tree ? 1 : 0.4))
     .nodeCanvasObject((n, ctx, scale) => {
       ctx.globalAlpha = isLit(n.id) ? 1 : 0.15
       ctx.beginPath()
@@ -62,11 +99,17 @@
       ctx.fillStyle = n.id === focus() || n.id === "index" ? colors.accent : colors.node
       ctx.fill()
 
-      ctx.font = `${(n.id === focus() ? 13 : 11) / scale}px ${colors.font}`
-      ctx.textAlign = "center"
-      ctx.textBaseline = "top"
-      ctx.fillStyle = colors.text
-      ctx.fillText(n.label, n.x, n.y + n.radius + 3 / scale)
+      // Like Obsidian: hubs are always labelled, the rest when zoomed in or
+      // when they are the focused node or one of its neighbours.
+      const isHub = neighbours.get(n.id).size > 4
+      const showLabel = focus() ? isLit(n.id) : isHub || scale > 1.6
+      if (showLabel) {
+        ctx.font = `${(n.id === focus() ? 13 : 11) / scale}px ${colors.font}`
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        ctx.fillStyle = colors.text
+        ctx.fillText(n.label, n.x, n.y + n.radius + 3 / scale)
+      }
       ctx.globalAlpha = 1
     })
     .nodePointerAreaPaint((n, color, ctx) => {
@@ -87,13 +130,16 @@
     .onEngineTick(() => {
       if (!fitted) {
         fitted = true
-        graph.zoomToFit(0, 60)
+        graph.zoomToFit(0, 90)
       }
     })
-    .onEngineStop(() => graph.zoomToFit(400, 60))
+    .onEngineStop(() => graph.zoomToFit(400, 90))
 
-  graph.d3Force("charge").strength(-150)
-  graph.d3Force("link").distance(45)
+  graph.d3Force("charge").strength(-200)
+  graph
+    .d3Force("link")
+    .distance((l) => (l.tree ? 40 : 90))
+    .strength((l) => (l.tree ? 0.9 : 0.02))
 
   // Show a note in the info box. The text comes from the note's own page, so
   // lists and links look the same as there.
@@ -132,7 +178,8 @@
     const a = e.target.closest("a.internal:not(.home-graph-open)")
     if (!a) return
     const slug = decodeURIComponent(new URL(a.href).pathname.replace(/^\//, "")) || "index"
-    if (!known.has(slug)) return
+    // "Om meg" is a full page meant to be read there, so let that link navigate.
+    if (!known.has(slug) || slug === "om-meg") return
     e.preventDefault()
     select(slug)
   })

@@ -1,9 +1,11 @@
 ---
-title: Arbeidserfaring
+title: "Arbeidserfaring"
 ---
 
-- 2023 – nå: [[Conversionista]]
-- 2022 – 2023: [[Lofoten|Annerledesår i Lofoten]] 🌄🐟🌊
-- 2019 – 2022: [[NAF]]
-- 2017 – 2019: [[Telia Norge]]
-- 2007 – 2017: [[OneCall]]
+Over 15 år fra web, UX og SEO via digital analyse til CRO og eksperimentering.
+
+- [[2023-nå|2023 – nå]]: Analyse og eksperimentering
+- [[2022-2023|2022 – 2023]]: Annerledesår i Lofoten
+- [[2017-2022|2017 – 2022]]: Digital analytiker
+- [[2010-2017|2010 – 2017]]: OneCall og onecall.no
+- [[2000-2009|2000 – 2009]]: Video, kundeservice og Guatemala
