@@ -2,7 +2,7 @@
 configuration:
   pageTitle: Jo Aleksander Bakke Kvalen
   pageTitleSuffix: ""
-  enableSPA: true
+  enableSPA: false # full page loads, so the homepage graph script always runs
   enablePopovers: true
   # Custom provider added in quartz/plugins/emitters/componentResources.ts.
   # TODO: needs a consent banner before this goes live.
@@ -82,7 +82,7 @@ plugins:
     enabled: true
     order: 40
   - source: "@quartz-community/table-of-contents"
-    enabled: true
+    enabled: false
     order: 50
     layout:
       position: right
@@ -162,17 +162,17 @@ plugins:
   - source: "@quartz-community/tag-page"
     enabled: false
   - source: "@quartz-community/explorer"
-    enabled: true
+    enabled: false
     layout:
       position: left
       priority: 50
   - source: "@quartz-community/graph"
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 10
   - source: "@quartz-community/search"
-    enabled: true
+    enabled: false
     layout:
       position: header
       priority: 20
@@ -180,7 +180,7 @@ plugins:
       groupOptions:
         grow: true
   - source: "@quartz-community/backlinks"
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 50
@@ -190,7 +190,7 @@ plugins:
       position: beforeBody
       priority: 10
   - source: "@quartz-community/content-meta"
-    enabled: true
+    enabled: false
     layout:
       position: beforeBody
       priority: 20
@@ -211,13 +211,13 @@ plugins:
       priority: 30
       group: toolbar
   - source: "@quartz-community/reader-mode"
-    enabled: true
+    enabled: false
     layout:
       position: header
       priority: 35
       group: toolbar
   - source: "@quartz-community/breadcrumbs"
-    enabled: true
+    enabled: false
     layout:
       position: beforeBody
       priority: 5
@@ -244,7 +244,7 @@ plugins:
   - source: "@quartz-community/recent-notes"
     enabled: false
   - source: "@quartz-community/spacer"
-    enabled: true
+    enabled: false
     options: {}
     order: 25
     layout:
@@ -291,7 +291,8 @@ layout:
         beforeBody: []
         left: []
         right: []
-    content: {}
+    content:
+      template: full-width # no sidebars: header, text, footer
     folder:
       exclude:
         - reader-mode

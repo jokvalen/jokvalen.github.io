@@ -9,6 +9,7 @@ body[data-slug="index"] {
   }
 
   & .page > #quartz-body {
+    max-width: none;
     grid-template-columns: 100%;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
@@ -16,6 +17,7 @@ body[data-slug="index"] {
       "grid-center"
       "grid-footer";
     min-height: 100vh;
+    box-sizing: border-box; // keep the side padding inside the window width
     padding: 0 2rem;
 
     & .sidebar {
@@ -38,6 +40,11 @@ body[data-slug="index"] {
       display: none;
     }
 
+    // Quartz gives the footer min-width: 100%, which overflows the padded grid on phones.
+    & footer {
+      min-width: 0;
+    }
+
     & .center > article {
       position: relative;
       min-height: 400px;
@@ -45,13 +52,14 @@ body[data-slug="index"] {
     }
   }
 
-  & .home-graph {
+  & #home-graph {
     position: absolute;
     inset: 0;
+    overflow: hidden;
   }
 
   // The intro text floats as a small card over the graph.
-  & article p {
+  & article > .markdown-preview-view > p {
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -65,7 +73,101 @@ body[data-slug="index"] {
   }
 }
 
-// Header bar on every page: site title on the left, search and toggles on the right.
+// Info box for the node that was clicked on the homepage graph.
+#home-graph-info {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  width: min(360px, calc(100% - 2rem));
+  box-sizing: border-box;
+  padding: 0.75rem 2.25rem 0.75rem 1rem;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+  &[hidden] {
+    display: none;
+  }
+
+  & h3 {
+    margin: 0 0 0.25rem;
+  }
+
+  // Short notes fit completely. Longer ones are cut off with a fade, and only
+  // then is the "Åpne siden" link shown (toggled by home-graph.js).
+  & .home-graph-body {
+    position: relative;
+    max-height: 14rem;
+    overflow: hidden;
+
+    & > :first-child {
+      margin-top: 0;
+    }
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.is-long .home-graph-body::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3rem;
+    background: linear-gradient(transparent, var(--light));
+  }
+
+  & .home-graph-open {
+    display: none;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  &.is-long .home-graph-open {
+    display: inline-block;
+  }
+
+  & button {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    border: 0;
+    background: none;
+    color: var(--gray);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  // On phones the box sits at the bottom, below the intro card.
+  @media all and ($mobile) {
+    top: auto;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+
+    & .home-graph-body {
+      max-height: 10rem;
+    }
+  }
+}
+
+// Note pages: no sidebars (full-width frame), so keep the text column readable.
+body:not([data-slug="index"]) #quartz-root.page[data-frame="full-width"] > #quartz-body {
+  max-width: 800px;
+  margin: 0 auto;
+
+  // Space between the header bar and the note's title.
+  & .page-header > header {
+    margin-bottom: 2rem;
+  }
+}
+
+// Header bar on every page: site title on the left, dark mode toggle on the right.
 .page-header > header {
   display: flex;
   align-items: center;
@@ -81,9 +183,10 @@ body[data-slug="index"] {
     margin-left: auto;
     max-width: 320px;
     flex: 1;
+    justify-content: flex-end;
   }
 
-  // On phones: title on its own line, search + toggles below.
+  // On phones: title on its own line, toggle below.
   @media all and ($mobile) {
     flex-wrap: wrap;
     gap: 0.5rem;
