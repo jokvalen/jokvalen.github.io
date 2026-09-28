@@ -4,12 +4,14 @@ configuration:
   pageTitleSuffix: ""
   enableSPA: false # full page loads, so the homepage graph script always runs
   enablePopovers: true
-  # Custom provider added in quartz/plugins/emitters/componentResources.ts.
-  # TODO: needs a consent banner before this goes live.
-  analytics:
-    provider: amplitude
-    apiKey: 802afe8ef5179f7467c7a44a94f58f41
-    serverZone: US
+  # Analytics is off until there is a consent banner. To turn Amplitude on,
+  # replace `analytics: null` with the commented block below.
+  # (Custom provider added in quartz/plugins/emitters/componentResources.ts.)
+  analytics: null
+  # analytics:
+  #   provider: amplitude
+  #   apiKey: 802afe8ef5179f7467c7a44a94f58f41
+  #   serverZone: US
   locale: nb-NO
   baseUrl: jokvalen.no
   ignorePatterns:

@@ -29,7 +29,7 @@ git pull upstream v5            # update Quartz
 
 ## Open items
 
-- Amplitude needs a consent banner before the site goes live (Norwegian cookie rules).
+- Analytics is off (`analytics: null`) until there is a consent banner (Norwegian cookie rules). The Amplitude settings are kept, commented out, in quartz.config.yaml.
 - The Amplitude key only works in the US data center, so `serverZone: US`.
 - Before first deploy: repo Settings → Pages → Source → "GitHub Actions".
 
