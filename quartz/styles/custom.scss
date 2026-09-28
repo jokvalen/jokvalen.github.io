@@ -1,0 +1,103 @@
+@use "./variables.scss" as *;
+
+// put your custom CSS here!
+
+// Homepage (content/index.md): header, full-size graph, footer. No sidebars.
+body[data-slug="index"] {
+  & .page {
+    max-width: none;
+  }
+
+  & .page > #quartz-body {
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "grid-header"
+      "grid-center"
+      "grid-footer";
+    min-height: 100vh;
+    padding: 0 2rem;
+
+    & .sidebar {
+      display: none;
+    }
+
+    // Let the header, article and footer sit directly in the grid above.
+    & .center {
+      display: contents;
+    }
+
+    & .page-header {
+      margin-top: 1.5rem;
+    }
+
+    // Article title, date and reading time: not needed on the homepage.
+    & .page-header .popover-hint,
+    & .center > hr,
+    & .page-footer {
+      display: none;
+    }
+
+    & .center > article {
+      position: relative;
+      min-height: 400px;
+      margin: 0;
+    }
+  }
+
+  & .home-graph {
+    position: absolute;
+    inset: 0;
+  }
+
+  // The intro text floats as a small card over the graph.
+  & article p {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1;
+    max-width: 320px;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+  }
+}
+
+// Header bar on every page: site title on the left, search and toggles on the right.
+.page-header > header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  & .page-title {
+    display: block; // Quartz hides it on mobile by default
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  & > .flex-component {
+    margin-left: auto;
+    max-width: 320px;
+    flex: 1;
+  }
+
+  // On phones: title on its own line, search + toggles below.
+  @media all and ($mobile) {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1rem;
+
+    & h2.page-title,
+    & h2.page-title a {
+      font-size: 1.4rem;
+      width: 100%;
+    }
+
+    & > .flex-component {
+      max-width: none;
+      margin-left: 0;
+    }
+  }
+}
