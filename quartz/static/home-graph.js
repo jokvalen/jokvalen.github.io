@@ -6,6 +6,27 @@
   const box = document.getElementById("home-graph-info")
   if (!el || !box) return
 
+  // Phones: the title card can collapse to just the title, and does so the
+  // first time the visitor touches the graph, so the graph gets the space.
+  const intro = document.querySelector(".home-intro")
+  const introToggle = intro?.querySelector(".home-intro-toggle")
+  const setCollapsed = (collapsed) => {
+    intro.classList.toggle("is-collapsed", collapsed)
+    introToggle.setAttribute("aria-expanded", String(!collapsed))
+  }
+  if (intro && introToggle) {
+    introToggle.addEventListener("click", () =>
+      setCollapsed(!intro.classList.contains("is-collapsed")),
+    )
+    el.addEventListener(
+      "pointerdown",
+      () => {
+        if (matchMedia("(max-width: 800px)").matches) setCollapsed(true)
+      },
+      { once: true },
+    )
+  }
+
   const index = await fetch("/static/contentIndex.json").then((r) => r.json())
 
   // Only real notes: skip generated pages like tags/ and folders.
@@ -99,10 +120,13 @@
       ctx.fillStyle = n.id === focus() || n.id === "index" ? colors.accent : colors.node
       ctx.fill()
 
-      // Like Obsidian: hubs are always labelled, the rest when zoomed in or
-      // when they are the focused node or one of its neighbours.
-      const isHub = neighbours.get(n.id).size > 4
-      const showLabel = focus() ? isLit(n.id) : isHub || scale > 1.6
+      // Like Obsidian: the more zoomed in, the more labels. Zoomed far out (e.g.
+      // on phones) only the biggest hubs; then all hubs; then every note.
+      // The focused node and its neighbours are always labelled.
+      const links = neighbours.get(n.id).size - 1
+      const showLabel = focus()
+        ? isLit(n.id)
+        : scale > 1.6 || (links >= 4 && scale > 0.9) || links >= 6
       if (showLabel) {
         ctx.font = `${(n.id === focus() ? 13 : 11) / scale}px ${colors.font}`
         ctx.textAlign = "center"

@@ -3,6 +3,7 @@ title: Jo Aleksander Bakke Kvalen
 ---
 
 <div class="home-intro">
+<button type="button" class="home-intro-toggle" aria-expanded="true" aria-label="Vis eller skjul introduksjonen"></button>
 
 # Strukturert nysgjerrighet.
 

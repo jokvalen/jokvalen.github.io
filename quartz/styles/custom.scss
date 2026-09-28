@@ -112,13 +112,60 @@ body[data-slug="index"] {
       font-size: 0.9rem;
     }
 
+    // Collapse button: phones only (see home-graph.js).
+    & .home-intro-toggle {
+      display: none;
+    }
+
+    // Phones: smaller card, and it can be collapsed to just the title.
     @media all and ($mobile) {
-      right: 1rem;
+      top: 0.5rem;
+      left: 0.5rem;
+      right: 0.5rem;
       max-width: none;
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 3rem 0.6rem 0.9rem;
 
       & h1 {
-        font-size: 1.5rem;
+        font-size: 1.1rem;
+        margin: 0;
+      }
+
+      & p {
+        margin-top: 0.35rem;
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+
+      & p:nth-of-type(n + 2) {
+        font-size: 0.8rem;
+      }
+
+      & .home-intro-toggle {
+        display: block;
+        position: absolute;
+        top: 0.1rem;
+        right: 0.1rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        border: 0;
+        background: none;
+        color: var(--gray);
+        font-size: 1rem;
+        cursor: pointer;
+
+        &::before {
+          content: "▴";
+        }
+      }
+
+      &.is-collapsed {
+        & > :not(h1):not(.home-intro-toggle) {
+          display: none;
+        }
+
+        & .home-intro-toggle::before {
+          content: "▾";
+        }
       }
     }
   }
@@ -237,21 +284,48 @@ body:not([data-slug="index"]) #quartz-root.page[data-frame="full-width"] > #quar
     justify-content: flex-end;
   }
 
-  // On phones: title on its own line, toggle below.
+  // On phones: title and dark mode toggle share one line, to save height.
   @media all and ($mobile) {
-    flex-wrap: wrap;
     gap: 0.5rem;
     padding-top: 1rem;
 
     & h2.page-title,
     & h2.page-title a {
-      font-size: 1.4rem;
-      width: 100%;
+      font-size: 1.15rem;
+    }
+
+    & .page-title {
+      flex-shrink: 1;
+      min-width: 0;
     }
 
     & > .flex-component {
+      flex: 0 0 auto;
       max-width: none;
-      margin-left: 0;
+    }
+  }
+}
+
+// Footer links: wrap whole links onto a new line instead of squeezing them.
+footer ul {
+  flex-wrap: wrap;
+
+  & li {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+// Phones: links first, the small "Laget med Quartz" line last.
+@media all and ($mobile) {
+  footer {
+    display: flex;
+    flex-direction: column;
+
+    & p {
+      order: 1;
+      margin: 0.5rem 0 0;
+      font-size: 0.75rem;
     }
   }
 }
