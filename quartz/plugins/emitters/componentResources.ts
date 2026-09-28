@@ -284,6 +284,12 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
     `)
   }
 
+  // Dark mode by default: the darkmode plugin follows the OS setting until the visitor
+  // uses the toggle. Runs after the plugin's script, so a saved choice still wins.
+  componentResources.beforeDOMLoaded.push(`
+    if (!localStorage.getItem("theme")) document.documentElement.setAttribute("saved-theme", "dark")
+  `)
+
   if (cfg.enableSPA) {
     componentResources.afterDOMLoaded.push(spaRouterScript)
   } else {

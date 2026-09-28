@@ -2,6 +2,28 @@
 
 // put your custom CSS here!
 
+// Light mode: links in the text are white on the dark green accent, so they stand out.
+// Only a.internal / a.external, so the site title and footer links keep their plain style.
+:root[saved-theme="light"] {
+  & a.internal,
+  & a.external {
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 0 0.3rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      color: #fff;
+      background-color: color-mix(in srgb, var(--secondary) 80%, black);
+    }
+
+    & .external-icon > path {
+      fill: #fff;
+    }
+  }
+}
+
 // Homepage (content/index.md): header, full-size graph, footer. No sidebars.
 body[data-slug="index"] {
   & .page {

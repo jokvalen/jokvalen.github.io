@@ -19,7 +19,7 @@ git pull upstream v5            # update Quartz
 - `quartz/static/home-graph.js` — full-size graph on the homepage (force-graph, data from `/static/contentIndex.json`). Clicking a node shows the note in an info box; "Åpne siden" only shows when the text is cut off.
 - `content/index.md` — homepage intro text plus the graph markup and script tags.
 - `quartz/styles/custom.scss` — homepage layout, info box, header bar, 800px note column.
-- `quartz/cfg.ts` + `quartz/plugins/emitters/componentResources.ts` — added an `amplitude` analytics provider. These are core Quartz files, so expect merge conflicts here on `git pull upstream v5`.
+- `quartz/cfg.ts` + `quartz/plugins/emitters/componentResources.ts` — added an `amplitude` analytics provider, and a script that makes dark mode the default. These are core Quartz files, so expect merge conflicts here on `git pull upstream v5`.
 
 ## Decisions
 
