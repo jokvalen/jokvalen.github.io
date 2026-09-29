@@ -1,0 +1,29 @@
+# Jo Aleksander Bakke Kvalen
+
+> Jo Aleksander Bakke Kvalen (Jo Kvalen) er digital analytiker i Oslo. Han jobber med analyse og eksperimentering: sporing og datakvalitet, analyse av kundereiser, hypoteser og A/B-testing, rapportering og praktisk bruk av AI i analyse. Nettstedet jokvalen.no er på norsk og utfyller LinkedIn-profilen hans.
+
+In English: Jo Aleksander Bakke Kvalen (Jo Kvalen) is a digital analyst in Oslo, Norway, working with analytics and experimentation: tracking and data quality, customer-journey analysis, hypotheses and A/B testing, reporting, and practical use of AI in analysis. Background in web, UX and SEO; digital analyst at Telia Norge (2017–2019) and NAF (2019–2022); since 2023 working with analytics and experimentation at the CRO agency Conversionista. Client work is described by industry only.
+
+Kontakt: jo@jokvalen.no · LinkedIn: https://www.linkedin.com/in/jokvalen/ · GitHub: https://github.com/jokvalen
+
+## Om Jo
+
+- [Om meg](https://jokvalen.no/om-meg): hvem han er, hva han gjør, bakgrunn og kontakt (med sammendrag på engelsk)
+- [Arbeidserfaring](https://jokvalen.no/arbeidserfaring): over 15 år fra web, UX og SEO via digital analyse til CRO og eksperimentering
+- [Kundeprosjekter](https://jokvalen.no/kundeprosjekter): utvalgte oppdrag, beskrevet etter bransje
+- [Utdanning](https://jokvalen.no/utdanning) og [Kurs og sertifiseringer](https://jokvalen.no/kurs-og-sertifiseringer)
+
+## Fagområder
+
+- [Digital analyse og måling](https://jokvalen.no/digital-analyse-og-m%C3%A5ling)
+- [CRO og eksperimentering](https://jokvalen.no/cro-og-eksperimentering)
+- [Datahistorier og rapportering](https://jokvalen.no/datahistorier)
+- [Praktisk AI](https://jokvalen.no/praktisk-ai)
+- [UX og web](https://jokvalen.no/ux-og-web)
+- [Verktøy](https://jokvalen.no/verkt%C3%B8y): Google Analytics 4, Google Tag Manager, BigQuery, Hotjar, Optimizely, Looker Studio, Power BI, Python, Claude Code
+
+## Optional
+
+- [Sideprosjekter](https://jokvalen.no/sideprosjekter)
+- [Interesser](https://jokvalen.no/interesser)
+- [Sitemap](https://jokvalen.no/sitemap.xml): alle sidene

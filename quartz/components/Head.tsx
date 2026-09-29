@@ -1,9 +1,10 @@
 import { i18n } from "../i18n"
-import { FullSlug, getFileExtension, joinSegments, pathToRoot } from "../util/path"
+import { FullSlug, getFileExtension, joinSegments, pathToRoot, simplifySlug } from "../util/path"
 import { CSSResourceToStyleElement, JSResourceToScriptElement } from "../util/resources"
 import { googleFontHref, googleFontSubsetHref } from "../util/theme"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { unescapeHTML } from "../util/escape"
+import { jsonLdString, structuredData } from "./structuredData"
 
 export default (() => {
   const Head: QuartzComponent = ({
@@ -12,8 +13,11 @@ export default (() => {
     externalResources,
     ctx,
   }: QuartzComponentProps) => {
-    const titleSuffix = cfg.pageTitleSuffix ?? ""
+    // Custom: no suffix on the homepage (its title is the name already), and an
+    // optional `seoTitle` frontmatter overrides the <title> and og:title.
+    const titleSuffix = fileData.slug === "index" ? "" : (cfg.pageTitleSuffix ?? "")
     const title =
+      (fileData.frontmatter?.seoTitle as string | undefined) ??
       (fileData.frontmatter?.title ?? i18n(cfg.locale).propertyDefaults.title) + titleSuffix
     const description =
       fileData.frontmatter?.socialDescription ??
@@ -28,8 +32,13 @@ export default (() => {
     const iconPath = joinSegments(baseDir, "static/icon.png")
 
     // Url of current page
+    // Custom: simplifySlug turns "index" into "/", so the homepage is https://jokvalen.no/
+    // (not /index); new URL() percent-encodes like the sitemap does.
     const socialUrl =
-      fileData.slug === "404" ? url.toString() : joinSegments(url.toString(), fileData.slug!)
+      fileData.slug === "404"
+        ? url.toString()
+        : new URL(joinSegments(url.toString(), simplifySlug(fileData.slug!))).href
+    const ld = fileData.slug === "404" ? null : structuredData(fileData, socialUrl)
 
     const usesCustomOgImage = ctx.cfg.plugins.emitters.some((e) => e.name === "CustomOgImages")
     const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
@@ -60,9 +69,10 @@ export default (() => {
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <meta name="og:site_name" content={cfg.pageTitle}></meta>
+        <meta property="og:site_name" content={cfg.pageTitle}></meta>
         <meta property="og:title" content={title} />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={fileData.slug === "om-meg" ? "profile" : "website"} />
+        <meta property="og:locale" content={cfg.locale.replace("-", "_")} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
@@ -73,10 +83,13 @@ export default (() => {
           <>
             <meta property="og:image" content={ogImageDefaultPath} />
             <meta property="og:image:url" content={ogImageDefaultPath} />
+            {/* Custom: size of the site-wide card in quartz/static/og-image.png */}
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
             <meta name="twitter:image" content={ogImageDefaultPath} />
             <meta
               property="og:image:type"
-              content={`image/${getFileExtension(ogImageDefaultPath) ?? "png"}`}
+              content={`image/${getFileExtension(ogImageDefaultPath)?.replace(".", "") ?? "png"}`}
             />
           </>
         )}
@@ -86,7 +99,14 @@ export default (() => {
             <meta property="twitter:domain" content={cfg.baseUrl}></meta>
             <meta property="og:url" content={socialUrl}></meta>
             <meta property="twitter:url" content={socialUrl}></meta>
+            {fileData.slug !== "404" && <link rel="canonical" href={socialUrl} />}
           </>
+        )}
+        {ld && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: jsonLdString(ld) }}
+          />
         )}
 
         <link rel="icon" href={iconPath} />

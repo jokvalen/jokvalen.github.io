@@ -1,5 +1,6 @@
 ---
 title: Jo Aleksander Bakke Kvalen
+seoTitle: Jo Aleksander Bakke Kvalen – digital analyse og eksperimentering
 ---
 
 <div class="home-intro">
@@ -7,7 +8,7 @@ title: Jo Aleksander Bakke Kvalen
 
 # Strukturert nysgjerrighet.
 
-Jeg hjelper digitale virksomheter å forstå brukerne sine, teste ideer og måle effekten.
+Jeg er digital analytiker i Oslo og hjelper digitale virksomheter å forstå brukerne sine, teste ideer og måle effekten.
 
 [[Om meg]] · [LinkedIn](https://www.linkedin.com/in/jokvalen/)
 

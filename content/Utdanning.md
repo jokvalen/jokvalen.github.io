@@ -1,5 +1,6 @@
 ---
 title: "Utdanning"
+socialDescription: "Bachelor i mediemanagement fra Høgskolen i Gjøvik, årsstudie i interaksjonsdesign ved NTNU, og radio og TV ved Skjeberg Folkehøgskole."
 ---
 
 - 2015 – 2016: [[Interaksjonsdesign (NTNU)|Interaksjonsdesign, årsstudie – IGM / NTNU]]

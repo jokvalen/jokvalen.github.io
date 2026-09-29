@@ -1,5 +1,8 @@
 ---
 title: "Foredrag: Yggdrasil 2014"
+aliases:
+  - 2013/06/06/hvordan-makse-ut-digital-analyse-med-tid-og-ressurspress
+socialDescription: "Foredrag på Yggdrasil-konferansen 2014: hvordan få maks ut av digital analyse med press på tid og ressurser, med nye onecall.no som case."
 ---
 
 **«Hvordan få maks ut av digital analyse med press på tid og ressurser? Case: One Call»**, Yggdrasil-konferansen i Tønsberg, 31. mars – 1. april 2014, sammen med en konsulent fra webbyrået.
