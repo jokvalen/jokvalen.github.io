@@ -1,0 +1,331 @@
+@use "./variables.scss" as *;
+
+// put your custom CSS here!
+
+// Light mode: links in the text are white on the dark green accent, so they stand out.
+// Only a.internal / a.external, so the site title and footer links keep their plain style.
+:root[saved-theme="light"] {
+  & a.internal,
+  & a.external {
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 0 0.3rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      color: #fff;
+      background-color: color-mix(in srgb, var(--secondary) 80%, black);
+    }
+
+    & .external-icon > path {
+      fill: #fff;
+    }
+  }
+}
+
+// Homepage (content/index.md): header, full-size graph, footer. No sidebars.
+body[data-slug="index"] {
+  & .page {
+    max-width: none;
+  }
+
+  & .page > #quartz-body {
+    max-width: none;
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "grid-header"
+      "grid-center"
+      "grid-footer";
+    min-height: 100vh;
+    box-sizing: border-box; // keep the side padding inside the window width
+    padding: 0 2rem;
+
+    & .sidebar {
+      display: none;
+    }
+
+    // Let the header, article and footer sit directly in the grid above.
+    & .center {
+      display: contents;
+    }
+
+    & .page-header {
+      margin-top: 1.5rem;
+    }
+
+    // Article title, date and reading time: not needed on the homepage.
+    & .page-header .popover-hint,
+    & .center > hr,
+    & .page-footer {
+      display: none;
+    }
+
+    // Quartz gives the footer min-width: 100%, which overflows the padded grid on phones.
+    & footer {
+      min-width: 0;
+    }
+
+    & .center > article {
+      position: relative;
+      min-height: 400px;
+      margin: 0;
+    }
+  }
+
+  & #home-graph {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  // Title card floating over the graph: value proposition, then links.
+  & .home-intro {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1;
+    max-width: 380px;
+    padding: 1rem 1.25rem;
+    background: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+
+    & h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+      line-height: 1.15;
+
+      // Quartz adds a "#" anchor link to every heading; not needed on a title.
+      & a[role="anchor"] {
+        display: none;
+      }
+    }
+
+    & p {
+      margin: 0.5rem 0 0;
+    }
+
+    // The link rows are secondary to the title and subline.
+    & p:nth-of-type(n + 2) {
+      font-size: 0.9rem;
+    }
+
+    // Collapse button: phones only (see home-graph.js).
+    & .home-intro-toggle {
+      display: none;
+    }
+
+    // Phones: smaller card, and it can be collapsed to just the title.
+    @media all and ($mobile) {
+      top: 0.5rem;
+      left: 0.5rem;
+      right: 0.5rem;
+      max-width: none;
+      padding: 0.6rem 3rem 0.6rem 0.9rem;
+
+      & h1 {
+        font-size: 1.1rem;
+        margin: 0;
+      }
+
+      & p {
+        margin-top: 0.35rem;
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+
+      & p:nth-of-type(n + 2) {
+        font-size: 0.8rem;
+      }
+
+      & .home-intro-toggle {
+        display: block;
+        position: absolute;
+        top: 0.1rem;
+        right: 0.1rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        border: 0;
+        background: none;
+        color: var(--gray);
+        font-size: 1rem;
+        cursor: pointer;
+
+        &::before {
+          content: "▴";
+        }
+      }
+
+      &.is-collapsed {
+        & > :not(h1):not(.home-intro-toggle) {
+          display: none;
+        }
+
+        & .home-intro-toggle::before {
+          content: "▾";
+        }
+      }
+    }
+  }
+}
+
+// Info box for the node that was clicked on the homepage graph.
+#home-graph-info {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  width: min(360px, calc(100% - 2rem));
+  box-sizing: border-box;
+  padding: 0.75rem 2.25rem 0.75rem 1rem;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+  &[hidden] {
+    display: none;
+  }
+
+  & h3 {
+    margin: 0 0 0.25rem;
+  }
+
+  // Short notes fit completely. Longer ones are cut off with a fade, and only
+  // then is the "Åpne siden" link shown (toggled by home-graph.js).
+  & .home-graph-body {
+    position: relative;
+    max-height: 14rem;
+    overflow: hidden;
+
+    & > :first-child {
+      margin-top: 0;
+    }
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.is-long .home-graph-body::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3rem;
+    background: linear-gradient(transparent, var(--light));
+  }
+
+  & .home-graph-open {
+    display: none;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  &.is-long .home-graph-open {
+    display: inline-block;
+  }
+
+  & button {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    border: 0;
+    background: none;
+    color: var(--gray);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  // On phones the box sits at the bottom, below the intro card.
+  @media all and ($mobile) {
+    top: auto;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+
+    & .home-graph-body {
+      max-height: 10rem;
+    }
+  }
+}
+
+// Note pages: no sidebars (full-width frame), so keep the text column readable.
+body:not([data-slug="index"]) #quartz-root.page[data-frame="full-width"] > #quartz-body {
+  max-width: 800px;
+  margin: 0 auto;
+
+  // Space between the header bar and the note's title.
+  & .page-header > header {
+    margin-bottom: 2rem;
+  }
+}
+
+// Header bar on every page: site title on the left, dark mode toggle on the right.
+.page-header > header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  & .page-title {
+    display: block; // Quartz hides it on mobile by default
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  & > .flex-component {
+    margin-left: auto;
+    max-width: 320px;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  // On phones: title and dark mode toggle share one line, to save height.
+  @media all and ($mobile) {
+    gap: 0.5rem;
+    padding-top: 1rem;
+
+    & h2.page-title,
+    & h2.page-title a {
+      font-size: 1.15rem;
+    }
+
+    & .page-title {
+      flex-shrink: 1;
+      min-width: 0;
+    }
+
+    & > .flex-component {
+      flex: 0 0 auto;
+      max-width: none;
+    }
+  }
+}
+
+// Footer links: wrap whole links onto a new line instead of squeezing them.
+footer ul {
+  flex-wrap: wrap;
+
+  & li {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+// Phones: links first, the small "Laget med Quartz" line last.
+@media all and ($mobile) {
+  footer {
+    display: flex;
+    flex-direction: column;
+
+    & p {
+      order: 1;
+      margin: 0.5rem 0 0;
+      font-size: 0.75rem;
+    }
+  }
+}
