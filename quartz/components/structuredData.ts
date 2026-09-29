@@ -36,6 +36,7 @@ const person = {
     "Praktisk AI",
     "UX",
     "SEO",
+    "Bro mellom utvikling og forretning",
   ],
   alumniOf: [
     { "@type": "CollegeOrUniversity", name: "Høgskolen i Gjøvik" },

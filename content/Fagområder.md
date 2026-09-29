@@ -1,6 +1,6 @@
 ---
 title: "Fagområder"
-socialDescription: "Fagområdene mine: digital analyse og måling, CRO og eksperimentering, datahistorier og rapportering, praktisk AI, og UX og web."
+socialDescription: "Fagområdene mine: digital analyse og måling, CRO og eksperimentering, datahistorier og rapportering, praktisk AI, UX og web, og bro mellom utvikling og forretning."
 ---
 
 - [[Digital analyse og måling]]
@@ -8,3 +8,4 @@ socialDescription: "Fagområdene mine: digital analyse og måling, CRO og eksper
 - [[Datahistorier|Datahistorier og rapportering]]
 - [[Praktisk AI]]
 - [[UX og web]]
+- [[Bro mellom utvikling og forretning]]

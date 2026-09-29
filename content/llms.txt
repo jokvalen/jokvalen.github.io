@@ -20,6 +20,7 @@ Kontakt: jo@jokvalen.no · LinkedIn: https://www.linkedin.com/in/jokvalen/ · Gi
 - [Datahistorier og rapportering](https://jokvalen.no/datahistorier)
 - [Praktisk AI](https://jokvalen.no/praktisk-ai)
 - [UX og web](https://jokvalen.no/ux-og-web)
+- [Bro mellom utvikling og forretning](https://jokvalen.no/bro-mellom-utvikling-og-forretning): oversetter mellom utviklere og markeds- og forretningssiden
 - [Verktøy](https://jokvalen.no/verkt%C3%B8y): Google Analytics 4, Google Tag Manager, BigQuery, Hotjar, Optimizely, Looker Studio, Power BI, Python, Claude Code
 
 ## Optional
