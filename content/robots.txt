@@ -1,0 +1,5 @@
+# All crawlers welcome, including search and AI crawlers.
+User-agent: *
+Allow: /
+
+Sitemap: https://jokvalen.no/sitemap.xml

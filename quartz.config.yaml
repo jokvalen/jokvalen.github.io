@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
   pageTitle: Jo Aleksander Bakke Kvalen
-  pageTitleSuffix: ""
+  pageTitleSuffix: " – Jo Kvalen" # not on the homepage, see Head.tsx
   enableSPA: false # full page loads, so the homepage graph script always runs
   enablePopovers: true
   # Analytics is off until there is a consent banner. To turn Amplitude on,
@@ -152,7 +152,7 @@ plugins:
   - source: "@quartz-community/favicon"
     enabled: true
   - source: "@quartz-community/og-image"
-    enabled: true
+    enabled: false # one site-wide card instead: quartz/static/og-image.png
   - source: "@quartz-community/cname"
     enabled: true
   - source: "@quartz-community/canvas-page"
@@ -265,7 +265,6 @@ plugins:
       includedProperties:
         - description
         - tags
-        - aliases
       excludedProperties: []
       hidePropertiesView: false
       delimiters: ---

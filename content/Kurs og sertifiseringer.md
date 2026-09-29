@@ -1,5 +1,6 @@
 ---
 title: "Kurs og sertifiseringer"
+socialDescription: "Kurs og sertifiseringer i eksperimentering, dataanalyse og utvikling, fra Coursera-kurs i data science til Optimizely Opal Development Accredited (2026)."
 ---
 
 - 2026: Optimizely Opal Development Accredited ([[Optimizely]])
