@@ -12,9 +12,10 @@ const person = {
   name: "Jo Aleksander Bakke Kvalen",
   alternateName: "Jo Kvalen",
   url: site,
-  jobTitle: "Digital analytiker",
+  // Matches the LinkedIn headline, plus the Norwegian form used on the site.
+  jobTitle: ["Senior Digital Analyst", "Senior digital analytiker"],
   description:
-    "Digital analytiker i Oslo som jobber med analyse og eksperimentering: sporing og datakvalitet, kundereiser, A/B-testing, rapportering og praktisk bruk av AI.",
+    "Senior digital analytiker i Oslo som jobber med analyse og eksperimentering: sporing og datakvalitet, kundereiser, A/B-testing, rapportering og praktisk bruk av AI.",
   email: "mailto:jo@jokvalen.no",
   address: { "@type": "PostalAddress", addressLocality: "Oslo", addressCountry: "NO" },
   knowsLanguage: ["nb", "en"],

@@ -1,11 +1,11 @@
 ---
 title: "Om meg"
-socialDescription: "Jo Aleksander Bakke Kvalen er digital analytiker i Oslo og jobber med analyse og eksperimentering: sporing, kundereiser, A/B-testing og rapportering."
+socialDescription: "Jo Aleksander Bakke Kvalen er senior digital analytiker i Oslo og jobber med analyse og eksperimentering: sporing, kundereiser, A/B-testing og rapportering."
 aliases:
   - om/index
 ---
 
-**Hei, jeg er Jo** (Jo Aleksander Bakke Kvalen), digital analytiker i Oslo. Jeg jobber med digital analyse og eksperimentering: å finne ut hva brukerne faktisk gjør, hvorfor, og hva som skjer når vi endrer noe.
+**Hei, jeg er Jo** (Jo Aleksander Bakke Kvalen), senior digital analytiker i Oslo. Jeg jobber med digital analyse og eksperimentering: å finne ut hva brukerne faktisk gjør, hvorfor, og hva som skjer når vi endrer noe.
 
 ## Hva jeg gjør
 
@@ -41,6 +41,6 @@ Utdanning, kurs og sertifiseringer: [[Utdanning]].
 
 <div lang="en">
 
-**In English:** I'm Jo Aleksander Bakke Kvalen (Jo Kvalen), a digital analyst in Oslo, Norway, working with analytics and experimentation. I help digital businesses go from measurement to decisions: tracking and data quality, customer-journey analysis, hypotheses and A/B tests, and reporting people actually read, plus practical use of AI in analysis. Background in web, UX and SEO, then analytics at Telia and NAF; since 2023 at Conversionista!. Find me on [LinkedIn](https://www.linkedin.com/in/jokvalen/).
+**In English:** I'm Jo Aleksander Bakke Kvalen (Jo Kvalen), a senior digital analyst in Oslo, Norway, working with analytics and experimentation. I help digital businesses go from measurement to decisions: tracking and data quality, customer-journey analysis, hypotheses and A/B tests, and reporting people actually read, plus practical use of AI in analysis. Background in web, UX and SEO, then analytics at Telia and NAF; since 2023 at Conversionista!. Find me on [LinkedIn](https://www.linkedin.com/in/jokvalen/).
 
 </div>
