@@ -261,26 +261,97 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
     const serverZone = cfg.analytics.serverZone ?? "US"
     // EU projects must load from (and send to) Amplitude's EU domain.
     const cdn = serverZone === "EU" ? "https://cdn.eu.amplitude.com" : "https://cdn.amplitude.com"
+    // Consent first (Norwegian ekomloven § 3-15): Amplitude only loads after "Godta".
+    // The choice is kept in localStorage; a .consent-reset button (on /personvern)
+    // shows the banner again. Styles: .consent-banner in quartz/styles/custom.scss.
     componentResources.afterDOMLoaded.push(`
-      const amplitudeScript = document.createElement('script');
-      amplitudeScript.src = '${cdn}/script/${apiKey}.js';
-      amplitudeScript.defer = true;
-      amplitudeScript.onload = () => {
-        // Page views + sessions only. trackHistoryChanges catches Quartz's SPA navigation.
-        window.amplitude.init('${apiKey}', {
-          serverZone: '${serverZone}',
-          autocapture: {
-            pageViews: { trackHistoryChanges: 'pathOnly' },
-            sessions: true,
-            attribution: false,
-            formInteractions: false,
-            fileDownloads: false,
-            elementInteractions: false,
-          },
-        });
+      const consentKey = 'analytics-consent';
+      const getConsent = () => { try { return localStorage.getItem(consentKey) } catch { return null } };
+      const setConsent = (value) => { try { localStorage.setItem(consentKey, value) } catch {} };
+
+      const loadAmplitude = () => {
+        if (window.amplitude) return window.amplitude.setOptOut?.(false);
+        const amplitudeScript = document.createElement('script');
+        amplitudeScript.src = '${cdn}/script/${apiKey}.js';
+        amplitudeScript.defer = true;
+        amplitudeScript.onload = () => {
+          // Page views + sessions only, and Amplitude does not store the IP address.
+          window.amplitude.init('${apiKey}', {
+            serverZone: '${serverZone}',
+            trackingOptions: { ipAddress: false },
+            autocapture: {
+              pageViews: { trackHistoryChanges: 'pathOnly' },
+              sessions: true,
+              attribution: false,
+              formInteractions: false,
+              fileDownloads: false,
+              elementInteractions: false,
+            },
+          });
+        };
+        document.head.appendChild(amplitudeScript);
       };
 
-      document.head.appendChild(amplitudeScript);
+      // Withdrawing consent: stop tracking and remove Amplitude's stored ID (cookies and
+      // localStorage keys start with AMP_).
+      const removeAmplitude = () => {
+        window.amplitude?.setOptOut?.(true);
+        document.cookie.split(';').map((c) => c.split('=')[0].trim()).filter((n) => n.startsWith('AMP_'))
+          .forEach((n) => { document.cookie = n + '=; Max-Age=0; path=/; domain=' + location.hostname; document.cookie = n + '=; Max-Age=0; path=/' });
+        try { Object.keys(localStorage).filter((k) => k.startsWith('AMP_')).forEach((k) => localStorage.removeItem(k)) } catch {}
+      };
+
+      const showBanner = () => {
+        if (document.querySelector('.consent-banner')) return;
+        const banner = document.createElement('div');
+        banner.className = 'consent-banner';
+        banner.setAttribute('role', 'dialog');
+        banner.setAttribute('aria-label', 'Samtykke til statistikk');
+        banner.innerHTML =
+          '<p>Kan jeg bruke Amplitude til statistikk over hvordan nettstedet brukes? <a href="/personvern">Les mer</a></p>' +
+          '<div class="consent-buttons"><button type="button" data-consent="granted">Godta</button>' +
+          '<button type="button" data-consent="denied">Avslå</button></div>';
+        banner.addEventListener('click', (e) => {
+          const choice = e.target.closest('button')?.dataset.consent;
+          if (!choice) return;
+          setConsent(choice);
+          banner.remove();
+          if (choice === 'granted') loadAmplitude(); else removeAmplitude();
+        });
+        document.body.appendChild(banner);
+      };
+
+      const consent = getConsent();
+      if (consent === 'granted') loadAmplitude();
+      else if (consent !== 'denied') showBanner();
+
+      // Outbound clicks (LinkedIn, GitHub, email etc.): the site's conversions. The page
+      // usually unloads right after, so send with sendBeacon. Graph events: home-graph.js.
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest?.('a[href]');
+        if (!a || !window.amplitude) return;
+        const url = new URL(a.href, location.href);
+        const isEmail = url.protocol === 'mailto:';
+        if (!isEmail && url.host === location.host) return;
+        const host = url.hostname.replace(/^www\\./, '');
+        window.amplitude.setTransport?.('beacon');
+        window.amplitude.track('Outbound Link Clicked', {
+          link_type: isEmail ? 'email' : host.includes('linkedin.com') ? 'linkedin' : host.includes('github.com') ? 'github' : 'other',
+          link_domain: isEmail ? null : host,
+          link_url: isEmail ? null : url.href,
+          link_text: a.textContent.trim(),
+          placement: a.closest('footer') ? 'footer' : 'content',
+        });
+        window.amplitude.flush?.();
+      }, true);
+
+      document.querySelectorAll('.consent-reset').forEach((button) =>
+        button.addEventListener('click', () => {
+          try { localStorage.removeItem(consentKey) } catch {}
+          removeAmplitude();
+          showBanner();
+        }),
+      );
     `)
   }
 

@@ -37,9 +37,8 @@ npm run images                  # regenerate favicon + social card (scripts/og/m
 
 ## Open items
 
-- Analytics is off (`analytics: null`) until there is a consent banner (Norwegian cookie rules). The Amplitude settings are kept, commented out, in quartz.config.yaml.
+- Analytics: Amplitude (US project) loads only after consent. The consent banner and gate are in `quartz/plugins/emitters/componentResources.ts` (choice in localStorage `analytics-consent`), styles in `custom.scss`, privacy page `content/Personvern.md` (`unlisted: true`, so it stays out of the graph and sitemap; linked from the footer). Keep the privacy page in sync if tracking changes (new events, retention, provider).
 - The Amplitude key only works in the US data center, so `serverZone: US`.
-- Before first deploy: repo Settings → Pages → Source → "GitHub Actions".
 
 ## Gotchas
 
