@@ -13,7 +13,7 @@ Hvis du godtar, bruker jeg Amplitude til å se hvordan nettstedet brukes: hvilke
 - **Hva som samles inn:** sidene du ser, hvilke notater du åpner i grafen på forsiden, klikk på lenker til andre nettsteder (for eksempel LinkedIn) og på e-postlenken, tidspunkt, nettleser, enhetstype og omtrentlig sted (land og by). IP-adressen din lagres ikke.
 - **Hva som lagres på enheten din:** en tilfeldig ID i en informasjonskapsel og i nettleserens lokale lagring, slik at flere besøk kan knyttes sammen. Den sier ikke hvem du er.
 - **Hvor dataene havner:** hos Amplitude, Inc. i USA. Amplitude er med i EU–US Data Privacy Framework.
-- **Hvor lenge:** inntil 12 måneder.
+- **Hvor lenge:** så lenge jeg bruker Amplitude til dette nettstedet. Slutter jeg, sletter jeg prosjektet og dataene.
 - **Grunnlag:** samtykket ditt. Du kan trekke det tilbake når som helst, og da slettes ID-en fra nettleseren din.
 
 <button type="button" class="consent-reset">Endre samtykke</button>
