@@ -7,10 +7,15 @@
   if (!el || !box) return
 
   // Phones: the title card can collapse to just the title, and does so the
-  // first time the visitor touches the graph, so the graph gets the space.
+  // first time the visitor touches the graph or opens a note, so the graph gets the space.
   const intro = document.querySelector(".home-intro")
   const introToggle = intro?.querySelector(".home-intro-toggle")
+  const isPhone = () => matchMedia("(max-width: 800px)").matches
+  // Margin around the whole graph when it is fitted to the screen; small on phones,
+  // where 90px on each side left the graph tiny.
+  const fitPadding = () => (isPhone() ? 20 : 90)
   const setCollapsed = (collapsed) => {
+    if (!intro || !introToggle) return
     intro.classList.toggle("is-collapsed", collapsed)
     introToggle.setAttribute("aria-expanded", String(!collapsed))
   }
@@ -21,7 +26,7 @@
     el.addEventListener(
       "pointerdown",
       () => {
-        if (matchMedia("(max-width: 800px)").matches) setCollapsed(true)
+        if (isPhone()) setCollapsed(true)
       },
       { once: true },
     )
@@ -108,6 +113,7 @@
     focus() && (idOf(l.source) === focus() || idOf(l.target) === focus())
 
   let fitted = false
+  let settled = false
   const graph = ForceGraph()(el)
     .graphData({ nodes, links })
     .backgroundColor("rgba(0,0,0,0)")
@@ -136,9 +142,10 @@
       }
       ctx.globalAlpha = 1
     })
-    .nodePointerAreaPaint((n, color, ctx) => {
+    // Tap area: at least ~14px radius on screen, so small nodes are easy to hit with a finger.
+    .nodePointerAreaPaint((n, color, ctx, scale) => {
       ctx.beginPath()
-      ctx.arc(n.x, n.y, n.radius + 4, 0, 2 * Math.PI)
+      ctx.arc(n.x, n.y, Math.max(n.radius + 4, 14 / scale), 0, 2 * Math.PI)
       ctx.fillStyle = color
       ctx.fill()
     })
@@ -148,16 +155,25 @@
     })
     .onNodeClick((n) => select(n.id, "node"))
     .onBackgroundClick(close)
+    // Touch screens: a tap always moves the finger a little, which counted as dragging
+    // the node and restarted the layout (and the zoom-to-fit below). Let a finger pan.
+    .enableNodeDrag(!matchMedia("(pointer: coarse)").matches)
     .autoPauseRedraw(false) // keep repainting so hover highlights show after the layout settles
     .warmupTicks(100) // lay out most of the graph before the first frame
     .cooldownTicks(100)
     .onEngineTick(() => {
       if (!fitted) {
         fitted = true
-        graph.zoomToFit(0, 90)
+        graph.zoomToFit(0, fitPadding())
       }
     })
-    .onEngineStop(() => graph.zoomToFit(400, 90))
+    // Fit once the first layout has settled. Not on later stops (e.g. after a node is
+    // dragged), or it zooms out from the node the visitor just selected.
+    .onEngineStop(() => {
+      if (settled) return
+      settled = true
+      graph.zoomToFit(400, fitPadding())
+    })
 
   graph.d3Force("charge").strength(-200)
   graph
@@ -167,32 +183,54 @@
 
   // Show a note in the info box. The text comes from the note's own page, so
   // lists and links look the same as there.
+  // Zoom level on phones when a note is opened: tree links (40 units) become ~100px.
+  const phoneZoom = 2.5
+
+  // Note text for the info box, fetched once per note.
+  const noteHtml = new Map()
+  async function loadNote(slug) {
+    if (!noteHtml.has(slug)) {
+      const html = await fetch("/" + slug).then((r) => r.text())
+      const doc = new DOMParser().parseFromString(html, "text/html")
+      const article = doc.querySelector("article .markdown-preview-view") || doc.querySelector("article")
+      // The homepage note holds this graph; only show its text.
+      article?.querySelectorAll("#home-graph, #home-graph-info, script").forEach((e) => e.remove())
+      noteHtml.set(slug, article ? article.innerHTML : "")
+    }
+    return noteHtml.get(slug)
+  }
+
   async function select(slug, source) {
     selected = slug
     // Analytics: window.amplitude only exists after consent (see componentResources.ts).
     window.amplitude?.track("Graph Note Opened", { note: slug, title: index[slug].title, source })
     const node = nodes.find((n) => n.id === slug)
-    if (node) graph.centerAt(node.x, node.y, 600)
+    if (node && !isPhone()) graph.centerAt(node.x, node.y, 600)
+    if (isPhone()) setCollapsed(true)
 
+    // Fill the box before showing it, so it doesn't open empty and then grow
+    // (visible as a flicker on slower phone connections).
+    const html = await loadNote(slug)
+    if (selected !== slug) return // user clicked another node meanwhile
     box.querySelector("h3").textContent = index[slug].title || slug
     box.querySelector(".home-graph-open").href = "/" + (slug === "index" ? "" : slug)
     const body = box.querySelector(".home-graph-body")
-    body.textContent = ""
-    box.classList.remove("is-long")
+    body.innerHTML = html
     box.hidden = false
-
-    const html = await fetch("/" + slug).then((r) => r.text())
-    if (selected !== slug) return // user clicked another node meanwhile
-    const doc = new DOMParser().parseFromString(html, "text/html")
-    const article = doc.querySelector("article .markdown-preview-view") || doc.querySelector("article")
-    // The homepage note holds this graph; only show its text.
-    article?.querySelectorAll("#home-graph, #home-graph-info, script").forEach((e) => e.remove())
-    body.innerHTML = article ? article.innerHTML : ""
     // Text taller than the box's max height gets cut off; only then offer the full page.
     box.classList.toggle("is-long", body.scrollHeight > body.clientHeight + 1)
+
+    // Phones: zoom in so the note and its neighbours have readable labels, and put the
+    // node in the middle of the space above the info box (which sits at the bottom).
+    if (node && isPhone()) {
+      const zoom = Math.max(graph.zoom(), phoneZoom)
+      graph.zoom(zoom, 600)
+      graph.centerAt(node.x, node.y + box.offsetHeight / 2 / zoom, 600)
+    }
   }
 
   function close() {
+    if (selected && isPhone()) graph.zoomToFit(400, fitPadding()) // back to the overview
     selected = null
     box.hidden = true
   }

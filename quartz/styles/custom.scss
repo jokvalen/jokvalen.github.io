@@ -39,6 +39,8 @@ body[data-slug="index"] {
       "grid-center"
       "grid-footer";
     min-height: 100vh;
+    // The visible height: on Android Chrome 100vh also counts the area behind the address bar.
+    min-height: 100dvh;
     box-sizing: border-box; // keep the side padding inside the window width
     padding: 0 2rem;
 
