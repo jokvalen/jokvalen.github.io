@@ -8,7 +8,7 @@ configuration:
   # consent script in quartz/plugins/emitters/componentResources.ts. Set to null to turn off.
   analytics:
     provider: amplitude
-    apiKey: 802afe8ef5179f7467c7a44a94f58f41
+    apiKey: 6733ef8f4eb5a90eca967e94b52b67ca
     serverZone: US # the key only works in the US data centre
   locale: nb-NO
   baseUrl: jokvalen.no
