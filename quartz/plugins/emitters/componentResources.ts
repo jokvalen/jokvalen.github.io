@@ -288,6 +288,12 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
               elementInteractions: false,
             },
           });
+          // Full page loads (enableSPA: false): send whatever is queued with sendBeacon
+          // when the page is left, e.g. "Åpne siden" in the graph or an outbound link.
+          addEventListener('pagehide', () => {
+            window.amplitude.setTransport?.('beacon');
+            window.amplitude.flush?.();
+          });
         };
         document.head.appendChild(amplitudeScript);
       };
