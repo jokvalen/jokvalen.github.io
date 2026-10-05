@@ -329,3 +329,55 @@ footer ul {
     }
   }
 }
+
+// Consent banner for analytics (script in quartz/plugins/emitters/componentResources.ts).
+// Both buttons look the same, so declining is as easy as accepting.
+.consent-banner {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 10;
+  width: min(380px, calc(100% - 2rem));
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  font-size: 0.95rem;
+
+  & p {
+    margin: 0 0 0.6rem;
+  }
+
+  & .consent-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  & button {
+    flex: 1;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--secondary);
+    border-radius: 5px;
+    background: var(--light);
+    color: var(--dark);
+    font: inherit;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--highlight);
+    }
+  }
+}
+
+// "Endre samtykke" button on /personvern.
+.consent-reset {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--secondary);
+  border-radius: 5px;
+  background: var(--light);
+  color: var(--dark);
+  font: inherit;
+  cursor: pointer;
+}

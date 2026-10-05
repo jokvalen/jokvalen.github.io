@@ -4,14 +4,12 @@ configuration:
   pageTitleSuffix: " – Jo Kvalen" # not on the homepage, see Head.tsx
   enableSPA: false # full page loads, so the homepage graph script always runs
   enablePopovers: true
-  # Analytics is off until there is a consent banner. To turn Amplitude on,
-  # replace `analytics: null` with the commented block below.
-  # (Custom provider added in quartz/plugins/emitters/componentResources.ts.)
-  analytics: null
-  # analytics:
-  #   provider: amplitude
-  #   apiKey: 802afe8ef5179f7467c7a44a94f58f41
-  #   serverZone: US
+  # Amplitude loads only after consent (banner + /personvern). Custom provider and
+  # consent script in quartz/plugins/emitters/componentResources.ts. Set to null to turn off.
+  analytics:
+    provider: amplitude
+    apiKey: 802afe8ef5179f7467c7a44a94f58f41
+    serverZone: US # the key only works in the US data centre
   locale: nb-NO
   baseUrl: jokvalen.no
   ignorePatterns:
@@ -241,6 +239,7 @@ plugins:
         GitHub: https://github.com/jokvalen
         LinkedIn: https://www.linkedin.com/in/jokvalen/
         Twitter: https://twitter.com/jokvalen
+        Personvern: /personvern
     layout:
       position: footer
       priority: 50

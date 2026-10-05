@@ -146,7 +146,7 @@
       hovered = n ? n.id : null
       el.style.cursor = n ? "pointer" : ""
     })
-    .onNodeClick((n) => select(n.id))
+    .onNodeClick((n) => select(n.id, "node"))
     .onBackgroundClick(close)
     .autoPauseRedraw(false) // keep repainting so hover highlights show after the layout settles
     .warmupTicks(100) // lay out most of the graph before the first frame
@@ -167,8 +167,10 @@
 
   // Show a note in the info box. The text comes from the note's own page, so
   // lists and links look the same as there.
-  async function select(slug) {
+  async function select(slug, source) {
     selected = slug
+    // Analytics: window.amplitude only exists after consent (see componentResources.ts).
+    window.amplitude?.track("Graph Note Opened", { note: slug, title: index[slug].title, source })
     const node = nodes.find((n) => n.id === slug)
     if (node) graph.centerAt(node.x, node.y, 600)
 
@@ -205,8 +207,12 @@
     // "Om meg" is a full page meant to be read there, so let that link navigate.
     if (!known.has(slug) || slug === "om-meg") return
     e.preventDefault()
-    select(slug)
+    select(slug, "link")
   })
+
+  box.querySelector(".home-graph-open").addEventListener("click", () =>
+    window.amplitude?.track("Graph Page Opened", { note: selected }),
+  )
 
   // force-graph needs explicit pixel sizes; keep it matched to its box.
   new ResizeObserver(() => graph.width(el.clientWidth).height(el.clientHeight)).observe(el)
